@@ -6,7 +6,8 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 app.get('/', (req, res) => {
-	res.sendFile(__dirname + '/index.html');
+	res.status(200).sendFile(__dirname + '/index.html');
+	// res.status(200).send('Hello, world!').end();
 });
 
 io.on('connection', (socket) => {
@@ -19,6 +20,10 @@ io.on('connection', (socket) => {
 	  });
 });
 
-server.listen(3000, () => {
-	console.log('listening on *:3000');
+//changing app.listen to server.listen makes it work outside of cloud
+//cloud says use app.listen
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
 });
