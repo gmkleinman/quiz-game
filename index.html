@@ -70,12 +70,13 @@
 	</form>
 
 	<script>
+		
 		var usernameField = document.getElementById('username')
 		usernameField.placeholder = "anonymous"
 		usernameField.addEventListener('change', (e) => {
 			username = e.target.value;
 		})
-		var socket = io();
+		var socket = io({transports: ['websocket']});
 		var messages = document.getElementById('messages');
 		var form = document.getElementById('form');
 		var input = document.getElementById('input');
