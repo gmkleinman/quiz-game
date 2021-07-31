@@ -3,11 +3,19 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+// const io = new Server(server);
+const io = require('socket.io')(server, {
+    cors: {
+        origin: "http://localhost:8100",
+        methods: ["GET", "POST"],
+        transports: ['websocket', 'polling'],
+        credentials: true
+    },
+    allowEIO3: true
+});
 
 app.get('/', (req, res) => {
 	res.status(200).sendFile(__dirname + '/index.html');
-	// res.status(200).send('Hello, world!').end();
 });
 
 io.on('connection', (socket) => {
@@ -20,10 +28,10 @@ io.on('connection', (socket) => {
 	  });
 });
 
-//changing app.listen to server.listen makes it work outside of cloud
+//server.listen makes it work outside of cloud
 //cloud says use app.listen
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
 });
