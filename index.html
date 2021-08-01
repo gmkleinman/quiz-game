@@ -63,6 +63,9 @@
 </head>
 
 <body>
+	<div>
+		Connected Users: <span id="user-count">0</span>
+	</div>
 	<ul id="messages"></ul>
 	<form id="form" action="">
 		<input id="input" autocomplete="off" /><button>Send</button>
@@ -99,6 +102,16 @@
 			item.textContent = `${msg.user}: ${msg.message}`;
 			messages.appendChild(item);
 			window.scrollTo(0, document.body.scrollHeight);
+		});
+
+		socket.on('user connected', function (userCount) {
+			var userCountDisplay = document.getElementById('user-count')
+			userCountDisplay.innerHTML = userCount;
+		});
+
+		socket.on('user disconnected', function (userCount) {
+			var userCountDisplay = document.getElementById('user-count')
+			userCountDisplay.innerHTML = userCount;
 		});
 	</script>
 </body>
