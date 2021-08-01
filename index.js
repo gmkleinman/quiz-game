@@ -4,10 +4,9 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http, {
 	transports: ['websocket'],
 });
+// see what happens if we don't specify websocket?
 const port = process.env.PORT || 8080;
 
-// "must only use the websocket"
-// io.set('transports', ['websocket']);
 app.get('/', (req, res) => {
 	res.status(200).sendFile(__dirname + '/index.html');
 });
@@ -20,8 +19,6 @@ io.on('connection', (socket) => {
 		message: 'user connected'
 	});
 
-	console.log(count)
-	console.log('a user connected');
 	socket.on('disconnect', () => {
 		count = io.engine.clientsCount;
 
@@ -30,7 +27,6 @@ io.on('connection', (socket) => {
 			message: 'user disconnected'
 		});
 		io.emit('user disconnected', count);
-		console.log('user disconnected');
 	});
 
 	socket.on('chat message', (msg) => {
